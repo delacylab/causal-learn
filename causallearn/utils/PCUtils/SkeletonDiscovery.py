@@ -125,11 +125,13 @@ def skeleton_discovery(
 
         if show_progress:
             pbar.refresh()
-
+        
+        edgelist = []
         for (x, y) in list(set(edge_removal)):
             edge1 = cg.G.get_edge(cg.G.nodes[x], cg.G.nodes[y])
             if edge1 is not None:
-                cg.G.remove_edge(edge1)
+                edgelist.append(edge1)
+        cg.G.remove_edges(edgelist)
 
     if show_progress:
         pbar.close()
