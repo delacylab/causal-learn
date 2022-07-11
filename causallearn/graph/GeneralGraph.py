@@ -749,8 +749,8 @@ class GeneralGraph(Graph, ABC):
 
         return nodes
 
-    # Removes the given edge from the graph.
-    def remove_edge(self, edge: Edge):
+    # Removes the given edge from the graph and reconstitutes dpath
+    def remove_edge_reconstitute_dpath(self, edge: Edge):
         node1 = edge.get_node1()
         node2 = edge.get_node2()
 
@@ -796,6 +796,55 @@ class GeneralGraph(Graph, ABC):
 
         self.reconstitute_dpath(self.get_graph_edges())
 
+    #Removes edge and does not reconstitute dpath. dpath must be reconstituted separately after all desired edges removed.
+    def remove_edge(self, edge: Edge):
+        node1 = edge.get_node1()
+        node2 = edge.get_node2()
+
+        i = self.node_map[node1]
+        j = self.node_map[node2]
+
+        out_of = self.graph[j, i]
+        in_to = self.graph[i, j]
+
+        end1 = edge.get_numerical_endpoint1()
+        end2 = edge.get_numerical_endpoint2()
+
+        if out_of == Endpoint.TAIL_AND_ARROW.value and in_to == Endpoint.TAIL_AND_ARROW.value:
+            if end1 == Endpoint.ARROW.value:
+                self.graph[j, i] = -1
+                self.graph[i, j] = -1
+            else:
+                if end1 == -1:
+                    self.graph[i, j] = Endpoint.ARROW.value
+                    self.graph[j, i] = Endpoint.ARROW.value
+        else:
+            if out_of == Endpoint.ARROW_AND_ARROW.value and in_to == Endpoint.TAIL_AND_ARROW.value:
+                if end1 == Endpoint.ARROW.value:
+                    self.graph[j, i] = 1
+                    self.graph[i, j] = -1
+                else:
+                    if end1 == -1:
+                        self.graph[j, i] = Endpoint.ARROW.value
+                        self.graph[i, j] = Endpoint.ARROW.value
+            else:
+                if out_of == Endpoint.TAIL_AND_ARROW.value and in_to == Endpoint.ARROW_AND_ARROW.value:
+                    if end1 == Endpoint.ARROW.value:
+                        self.graph[j, i] = -1
+                        self.graph[i, j] = 1
+                    else:
+                        if end1 == -1:
+                            self.graph[j, i] = Endpoint.ARROW.value
+                            self.graph[i, j] = Endpoint.ARROW.value
+                else:
+                    if end1 == in_to and end2 == out_of:
+                        self.graph[j, i] = 0
+                        self.graph[i, j] = 0      
+    
+    #Clears dpath
+    def clear_dpath(self):
+        self.dpath = np.zeros((self.num_vars, self.num_vars), np.dtype(int))   
+    
     # Removes the edge connecting the given two nodes, provided there is exactly one such edge.
     def remove_connecting_edge(self, node1: Node, node2: Node):
         i = self.node_map[node1]
@@ -821,6 +870,8 @@ class GeneralGraph(Graph, ABC):
     def remove_edges(self, edges: List[Edge]):
         for edge in edges:
             self.remove_edge(edge)
+        self.clear_dpath()
+        self.reconstitute_dpath(self.get_graph_edges())
 
     # Removes a node from the graph.
     def remove_node(self, node: Node):
