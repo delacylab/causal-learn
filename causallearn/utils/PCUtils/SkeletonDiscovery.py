@@ -85,10 +85,10 @@ def skeleton_discovery(
                     if not stable:
                         edge1 = cg.G.get_edge(cg.G.nodes[x], cg.G.nodes[y])
                         if edge1 is not None:
-                            cg.G.remove_edge(edge1)
+                            cg.G.remove_edge_reconstitute_dpath(edge1)
                         edge2 = cg.G.get_edge(cg.G.nodes[y], cg.G.nodes[x])
                         if edge2 is not None:
-                            cg.G.remove_edge(edge2)
+                            cg.G.remove_edge_reconstitute_dpath(edge2)
                         append_value(cg.sepset, x, y, ())
                         append_value(cg.sepset, y, x, ())
                         break
@@ -105,10 +105,10 @@ def skeleton_discovery(
                         if not stable:
                             edge1 = cg.G.get_edge(cg.G.nodes[x], cg.G.nodes[y])
                             if edge1 is not None:
-                                cg.G.remove_edge(edge1)
+                                cg.G.remove_edge_reconstitute_dpath(edge1)
                             edge2 = cg.G.get_edge(cg.G.nodes[y], cg.G.nodes[x])
                             if edge2 is not None:
-                                cg.G.remove_edge(edge2)
+                                cg.G.remove_edge_reconstitute_dpath(edge2)
                             append_value(cg.sepset, x, y, S)
                             append_value(cg.sepset, y, x, S)
                             break
