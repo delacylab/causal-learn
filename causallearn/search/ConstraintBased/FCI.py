@@ -226,19 +226,19 @@ def fci_orient_bk(bk: BackgroundKnowledge | None, graph: Graph):
     edges = graph.get_graph_edges()
     for edge in edges:
         if bk.is_forbidden(edge.get_node1(), edge.get_node2()):
-            graph.remove_edge(edge)
+            graph.remove_edge_reconstitute_dpath(edge)
             graph.add_directed_edge(edge.get_node2(), edge.get_node1())
             print("Orienting edge (Knowledge): " + str(graph.get_edge(edge.get_node2(), edge.get_node1())))
         elif bk.is_forbidden(edge.get_node2(), edge.get_node1()):
-            graph.remove_edge(edge)
+            graph.remove_edge_reconstitute_dpath(edge)
             graph.add_directed_edge(edge.get_node1(), edge.get_node2())
             print("Orienting edge (Knowledge): " + str(graph.get_edge(edge.get_node2(), edge.get_node1())))
         elif bk.is_required(edge.get_node1(), edge.get_node2()):
-            graph.remove_edge(edge)
+            graph.remove_edge_reconstitute_dpath(edge)
             graph.add_directed_edge(edge.get_node1(), edge.get_node2())
             print("Orienting edge (Knowledge): " + str(graph.get_edge(edge.get_node2(), edge.get_node1())))
         elif bk.is_required(edge.get_node2(), edge.get_node1()):
-            graph.remove_edge(edge)
+            graph.remove_edge_reconstitute_dpath(edge)
             graph.add_directed_edge(edge.get_node2(), edge.get_node1())
             print("Orienting edge (Knowledge): " + str(graph.get_edge(edge.get_node2(), edge.get_node1())))
     print("Finishing BK Orientation.")
@@ -288,11 +288,11 @@ def rule0(graph: Graph, nodes: List[Node], sep_sets: Dict[Tuple[int, int], Set[i
                     continue
 
                 edge1 = graph.get_edge(node_a, node_b)
-                graph.remove_edge(edge1)
+                graph.remove_edge_reconstitute_dpath(edge1)
                 graph.add_edge(Edge(node_a, node_b, edge1.get_proximal_endpoint(node_a), Endpoint.ARROW))
 
                 edge2 = graph.get_edge(node_c, node_b)
-                graph.remove_edge(edge2)
+                graph.remove_edge_reconstitute_dpath(edge2)
                 graph.add_edge(Edge(node_c, node_b, edge2.get_proximal_endpoint(node_c), Endpoint.ARROW))
 
                 if verbose:
@@ -304,7 +304,7 @@ def reorientAllWith(graph: Graph, endpoint: Endpoint):
     # reorient all edges with CIRCLE Endpoint
     ori_edges = graph.get_graph_edges()
     for ori_edge in ori_edges:
-        graph.remove_edge(ori_edge)
+        graph.remove_edge_reconstitute_dpath(ori_edge)
         ori_edge.set_endpoint1(endpoint)
         ori_edge.set_endpoint2(endpoint)
         graph.add_edge(ori_edge)
@@ -320,7 +320,7 @@ def ruleR1(node_a: Node, node_b: Node, node_c: Node, graph: Graph, bk: Backgroun
             return changeFlag
 
         edge1 = graph.get_edge(node_c, node_b)
-        graph.remove_edge(edge1)
+        graph.remove_edge_reconstitute_dpath(edge1)
         graph.add_edge(Edge(node_c, node_b, Endpoint.ARROW, Endpoint.TAIL))
 
         changeFlag = True
@@ -342,7 +342,7 @@ def ruleR2(node_a: Node, node_b: Node, node_c: Node, graph: Graph, bk: Backgroun
                 return changeFlag
 
             edge1 = graph.get_edge(node_a, node_c)
-            graph.remove_edge(edge1)
+            graph.remove_edge_reconstitute_dpath(edge1)
             graph.add_edge(Edge(node_a, node_c, edge1.get_proximal_endpoint(node_a), Endpoint.ARROW))
 
             if verbose:
@@ -420,7 +420,7 @@ def ruleR3(graph: Graph, sep_sets: Dict[Tuple[int, int], Set[int]], bk: Backgrou
                     continue
 
                 edge1 = graph.get_edge(node_D, node_B)
-                graph.remove_edge(edge1)
+                graph.remove_edge_reconstitute_dpath(edge1)
                 graph.add_edge(Edge(node_D, node_B, edge1.get_proximal_endpoint(node_D), Endpoint.ARROW))
 
                 if verbose:
@@ -482,7 +482,7 @@ def doDdpOrientation(node_d: Node, node_a: Node, node_b: Node, node_c: Node, pre
 
     if ind:
         edge = graph.get_edge(node_c, node_b)
-        graph.remove_edge(edge)
+        graph.remove_edge_reconstitute_dpath(edge)
         graph.add_edge(Edge(node_c, node_b, edge.get_proximal_endpoint(node_c), Endpoint.TAIL))
 
         if verbose:
@@ -500,11 +500,11 @@ def doDdpOrientation(node_d: Node, node_a: Node, node_b: Node, node_c: Node, pre
             return False, change_flag
 
         edge1 = graph.get_edge(node_a, node_b)
-        graph.remove_edge(edge1)
+        graph.remove_edge_reconstitute_dpath(edge1)
         graph.add_edge(Edge(node_a, node_b, edge1.get_proximal_endpoint(node_a), Endpoint.ARROW))
 
         edge2 = graph.get_edge(node_c, node_b)
-        graph.remove_edge(edge2)
+        graph.remove_edge_reconstitute_dpath(edge2)
         graph.add_edge(Edge(node_c, node_b, edge2.get_proximal_endpoint(node_c), Endpoint.ARROW))
 
         if verbose:
@@ -711,7 +711,7 @@ def get_color_edges(graph: Graph) -> List[Edge]:
                 node_x = edge.get_node2()
                 node_y = edge.get_node1()
 
-            graph.remove_edge(edge)
+            graph.remove_edge_reconstitute_dpath(edge)
 
             if not existsSemiDirectedPath(node_x, node_y, -1, graph):
                 edge.properties.append(Edge.Property.dd)  # green
@@ -791,7 +791,7 @@ def fci(dataset: ndarray, independence_test_method: str=fisherz, alpha: float = 
     # reorient all edges with CIRCLE Endpoint
     ori_edges = graph.get_graph_edges()
     for ori_edge in ori_edges:
-        graph.remove_edge(ori_edge)
+        graph.remove_edge_reconstitute_dpath(ori_edge)
         ori_edge.set_endpoint1(Endpoint.CIRCLE)
         ori_edge.set_endpoint2(Endpoint.CIRCLE)
         graph.add_edge(ori_edge)
@@ -814,7 +814,7 @@ def fci(dataset: ndarray, independence_test_method: str=fisherz, alpha: float = 
 
     for waiting_to_deleted_edge in waiting_to_deleted_edges:
         dedge_node_x, dedge_node_y, dedge_sep_set = waiting_to_deleted_edge
-        graph.remove_edge(graph.get_edge(dedge_node_x, dedge_node_y))
+        graph.remove_edge_reconstitute_dpath(graph.get_edge(dedge_node_x, dedge_node_y))
         sep_sets[(graph.node_map[dedge_node_x], graph.node_map[dedge_node_y])] = dedge_sep_set
 
         if verbose:
