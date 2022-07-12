@@ -26,7 +26,7 @@ def pdag2dag(G: GeneralGraph) -> GeneralGraph:
     for edge in edges:
         if not ((edge.endpoint1 == Endpoint.ARROW and edge.endpoint2 == Endpoint.TAIL) or (
                 edge.endpoint1 == Endpoint.TAIL and edge.endpoint2 == Endpoint.ARROW)):
-            Gd.remove_edge(edge)
+            Gd.remove_edge_reconstitute_dpath(edge)
 
     Gp = deepcopy(G)
     inde = np.zeros(Gp.num_vars, dtype=np.dtype(int))  # index whether the ith node has been removed. 1:removed; 0: not
