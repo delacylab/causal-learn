@@ -48,7 +48,7 @@ def meek(cg: CausalGraph, background_knowledge: BackgroundKnowledge | None = Non
                         if cg_new.G.is_ancestor_of(cg_new.G.nodes[k], cg_new.G.nodes[j]):
                             continue
                         else:
-                            cg_new.G.remove_edge(edge1)
+                            cg_new.G.remove_edge_reconstitute_dpath(edge1)
                     else:
                         continue
                     cg_new.G.add_edge(Edge(cg_new.G.nodes[j], cg_new.G.nodes[k], Endpoint.TAIL, Endpoint.ARROW))
@@ -66,7 +66,7 @@ def meek(cg: CausalGraph, background_knowledge: BackgroundKnowledge | None = Non
                         if cg_new.G.is_ancestor_of(cg_new.G.nodes[k], cg_new.G.nodes[i]):
                             continue
                         else:
-                            cg_new.G.remove_edge(edge1)
+                            cg_new.G.remove_edge_reconstitute_dpath(edge1)
                     else:
                         continue
                     cg_new.G.add_edge(Edge(cg_new.G.nodes[i], cg_new.G.nodes[k], Endpoint.TAIL, Endpoint.ARROW))
@@ -85,7 +85,7 @@ def meek(cg: CausalGraph, background_knowledge: BackgroundKnowledge | None = Non
                         if cg_new.G.is_ancestor_of(cg_new.G.nodes[l], cg_new.G.nodes[i]):
                             continue
                         else:
-                            cg_new.G.remove_edge(edge1)
+                            cg_new.G.remove_edge_reconstitute_dpath(edge1)
                     else:
                         continue
                     cg_new.G.add_edge(Edge(cg_new.G.nodes[i], cg_new.G.nodes[l], Endpoint.TAIL, Endpoint.ARROW))
@@ -132,7 +132,7 @@ def definite_meek(cg: CausalGraph, background_knowledge: BackgroundKnowledge | N
                     if cg_new.G.is_ancestor_of(cg_new.G.nodes[k], cg_new.G.nodes[j]):
                         continue
                     else:
-                        cg_new.G.remove_edge(edge1)
+                        cg_new.G.remove_edge_reconstitute_dpath(edge1)
                 else:
                     continue
                 cg_new.G.add_edge(Edge(cg_new.G.nodes[j], cg_new.G.nodes[k], Endpoint.TAIL, Endpoint.ARROW))
@@ -147,7 +147,7 @@ def definite_meek(cg: CausalGraph, background_knowledge: BackgroundKnowledge | N
                     if cg_new.G.is_ancestor_of(cg_new.G.nodes[i], cg_new.G.nodes[j]):
                         continue
                     else:
-                        cg_new.G.remove_edge(edge1)
+                        cg_new.G.remove_edge_reconstitute_dpath(edge1)
                 else:
                     continue
                 cg_new.G.add_edge(Edge(cg_new.G.nodes[j], cg_new.G.nodes[i], Endpoint.TAIL, Endpoint.ARROW))
@@ -165,7 +165,7 @@ def definite_meek(cg: CausalGraph, background_knowledge: BackgroundKnowledge | N
                         if cg_new.G.is_ancestor_of(cg_new.G.nodes[k], cg_new.G.nodes[i]):
                             continue
                         else:
-                            cg_new.G.remove_edge(edge1)
+                            cg_new.G.remove_edge_reconstitute_dpath(edge1)
                     else:
                         continue
                     cg_new.G.add_edge(Edge(cg_new.G.nodes[i], cg_new.G.nodes[k], Endpoint.TAIL, Endpoint.ARROW))
@@ -185,7 +185,7 @@ def definite_meek(cg: CausalGraph, background_knowledge: BackgroundKnowledge | N
                         if cg_new.G.is_ancestor_of(cg_new.G.nodes[l], cg_new.G.nodes[i]):
                             continue
                         else:
-                            cg_new.G.remove_edge(edge1)
+                            cg_new.G.remove_edge_reconstitute_dpath(edge1)
                     else:
                         continue
                     cg_new.G.add_edge(Edge(cg_new.G.nodes[i], cg_new.G.nodes[l], Endpoint.TAIL, Endpoint.ARROW))
