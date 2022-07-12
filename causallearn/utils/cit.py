@@ -78,6 +78,7 @@ class CIT(object):
         """
         var = list((X, Y) + condition_set)
         sub_corr_matrix = self.correlation_matrix[np.ix_(var, var)]
+        assert np.isclose(np.linalg.det(sub_corr_matrix), 0) == False, "sub_correlation matrix has a zero/near-zero determinant and is not invertible."
         inv = np.linalg.inv(sub_corr_matrix)
         r = -inv[0, 1] / sqrt(inv[0, 0] * inv[1, 1])
         Z = 0.5 * log((1 + r) / (1 - r))
