@@ -51,29 +51,29 @@ def uc_sepset(cg: CausalGraph, priority: int = 3,
             if priority == 0:  # 0: overwrite
                 edge1 = cg_new.G.get_edge(cg_new.G.nodes[x], cg_new.G.nodes[y])
                 if edge1 is not None:
-                    cg_new.G.remove_edge(edge1)
+                    cg_new.G.remove_edge_reconstitute_dpath(edge1)
                 edge2 = cg_new.G.get_edge(cg_new.G.nodes[y], cg_new.G.nodes[x])
                 if edge2 is not None:
-                    cg_new.G.remove_edge(edge2)
+                    cg_new.G.remove_edge_reconstitute_dpath(edge2)
                 # Fully orient the edge irrespective of what have been oriented
                 cg_new.G.add_edge(Edge(cg_new.G.nodes[x], cg_new.G.nodes[y], Endpoint.TAIL, Endpoint.ARROW))
 
                 edge3 = cg_new.G.get_edge(cg_new.G.nodes[y], cg_new.G.nodes[z])
                 if edge3 is not None:
-                    cg_new.G.remove_edge(edge3)
+                    cg_new.G.remove_edge_reconstitute_dpath(edge3)
                 edge4 = cg_new.G.get_edge(cg_new.G.nodes[z], cg_new.G.nodes[y])
                 if edge4 is not None:
-                    cg_new.G.remove_edge(edge4)
+                    cg_new.G.remove_edge_reconstitute_dpath(edge4)
                 cg_new.G.add_edge(Edge(cg_new.G.nodes[z], cg_new.G.nodes[y], Endpoint.TAIL, Endpoint.ARROW))
 
             elif priority == 1:  # 1: orient bi-directed
                 edge1 = cg_new.G.get_edge(cg_new.G.nodes[x], cg_new.G.nodes[y])
                 if edge1 is not None:
                     if cg_new.G.graph[x, y] == Endpoint.TAIL.value and cg_new.G.graph[y, x] == Endpoint.TAIL.value:
-                        cg_new.G.remove_edge(edge1)
+                        cg_new.G.remove_edge_reconstitute_dpath(edge1)
                         cg_new.G.add_edge(Edge(cg_new.G.nodes[x], cg_new.G.nodes[y], Endpoint.TAIL, Endpoint.ARROW))
                     elif cg_new.G.graph[x, y] == Endpoint.ARROW.value and cg_new.G.graph[y, x] == Endpoint.TAIL.value:
-                        cg_new.G.remove_edge(edge1)
+                        cg_new.G.remove_edge_reconstitute_dpath(edge1)
                         cg_new.G.add_edge(Edge(cg_new.G.nodes[x], cg_new.G.nodes[y], Endpoint.ARROW, Endpoint.ARROW))
                 else:
                     cg_new.G.add_edge(Edge(cg_new.G.nodes[x], cg_new.G.nodes[y], Endpoint.TAIL, Endpoint.ARROW))
@@ -81,10 +81,10 @@ def uc_sepset(cg: CausalGraph, priority: int = 3,
                 edge2 = cg_new.G.get_edge(cg_new.G.nodes[z], cg_new.G.nodes[y])
                 if edge2 is not None:
                     if cg_new.G.graph[z, y] == Endpoint.TAIL.value and cg_new.G.graph[y, z] == Endpoint.TAIL.value:
-                        cg_new.G.remove_edge(edge2)
+                        cg_new.G.remove_edge_reconstitute_dpath(edge2)
                         cg_new.G.add_edge(Edge(cg_new.G.nodes[z], cg_new.G.nodes[y], Endpoint.TAIL, Endpoint.ARROW))
                     elif cg_new.G.graph[z, y] == Endpoint.ARROW.value and cg_new.G.graph[y, z] == Endpoint.TAIL.value:
-                        cg_new.G.remove_edge(edge2)
+                        cg_new.G.remove_edge_reconstitute_dpath(edge2)
                         cg_new.G.add_edge(Edge(cg_new.G.nodes[z], cg_new.G.nodes[y], Endpoint.ARROW, Endpoint.ARROW))
                 else:
                     cg_new.G.add_edge(Edge(cg_new.G.nodes[z], cg_new.G.nodes[y], Endpoint.TAIL, Endpoint.ARROW))
@@ -93,13 +93,13 @@ def uc_sepset(cg: CausalGraph, priority: int = 3,
                 if (not cg_new.is_fully_directed(y, x)) and (not cg_new.is_fully_directed(y, z)):
                     edge1 = cg_new.G.get_edge(cg_new.G.nodes[x], cg_new.G.nodes[y])
                     if edge1 is not None:
-                        cg_new.G.remove_edge(edge1)
+                        cg_new.G.remove_edge_reconstitute_dpath(edge1)
                     # Orient only if the edges have not been oriented the other way around
                     cg_new.G.add_edge(Edge(cg_new.G.nodes[x], cg_new.G.nodes[y], Endpoint.TAIL, Endpoint.ARROW))
 
                     edge2 = cg_new.G.get_edge(cg_new.G.nodes[z], cg_new.G.nodes[y])
                     if edge2 is not None:
-                        cg_new.G.remove_edge(edge2)
+                        cg_new.G.remove_edge_reconstitute_dpath(edge2)
                     cg_new.G.add_edge(Edge(cg_new.G.nodes[z], cg_new.G.nodes[y], Endpoint.TAIL, Endpoint.ARROW))
 
             else:
@@ -131,13 +131,13 @@ def uc_sepset(cg: CausalGraph, priority: int = 3,
             if (not cg_new.is_fully_directed(y, x)) and (not cg_new.is_fully_directed(y, z)):
                 edge1 = cg_new.G.get_edge(cg_new.G.nodes[x], cg_new.G.nodes[y])
                 if edge1 is not None:
-                    cg_new.G.remove_edge(edge1)
+                    cg_new.G.remove_edge_reconstitute_dpath(edge1)
                 # Orient only if the edges have not been oriented the other way around
                 cg_new.G.add_edge(Edge(cg_new.G.nodes[x], cg_new.G.nodes[y], Endpoint.TAIL, Endpoint.ARROW))
 
                 edge2 = cg_new.G.get_edge(cg_new.G.nodes[z], cg_new.G.nodes[y])
                 if edge2 is not None:
-                    cg_new.G.remove_edge(edge2)
+                    cg_new.G.remove_edge_reconstitute_dpath(edge2)
                 cg_new.G.add_edge(Edge(cg_new.G.nodes[z], cg_new.G.nodes[y], Endpoint.TAIL, Endpoint.ARROW))
 
         return cg_new
@@ -189,29 +189,29 @@ def maxp(cg: CausalGraph, priority: int = 3, background_knowledge: BackgroundKno
             if priority == 0:  # 0: overwrite
                 edge1 = cg_new.G.get_edge(cg_new.G.nodes[x], cg_new.G.nodes[y])
                 if edge1 is not None:
-                    cg_new.G.remove_edge(edge1)
+                    cg_new.G.remove_edge_reconstitute_dpath(edge1)
                 edge2 = cg_new.G.get_edge(cg_new.G.nodes[y], cg_new.G.nodes[x])
                 if edge2 is not None:
-                    cg_new.G.remove_edge(edge2)
+                    cg_new.G.remove_edge_reconstitute_dpath(edge2)
                 # Fully orient the edge irrespective of what have been oriented
                 cg_new.G.add_edge(Edge(cg_new.G.nodes[x], cg_new.G.nodes[y], Endpoint.TAIL, Endpoint.ARROW))
 
                 edge3 = cg_new.G.get_edge(cg_new.G.nodes[y], cg_new.G.nodes[z])
                 if edge3 is not None:
-                    cg_new.G.remove_edge(edge3)
+                    cg_new.G.remove_edge_reconstitute_dpath(edge3)
                 edge4 = cg_new.G.get_edge(cg_new.G.nodes[z], cg_new.G.nodes[y])
                 if edge4 is not None:
-                    cg_new.G.remove_edge(edge4)
+                    cg_new.G.remove_edge_reconstitute_dpath(edge4)
                 cg_new.G.add_edge(Edge(cg_new.G.nodes[z], cg_new.G.nodes[y], Endpoint.TAIL, Endpoint.ARROW))
 
             elif priority == 1:  # 1: orient bi-directed
                 edge1 = cg_new.G.get_edge(cg_new.G.nodes[x], cg_new.G.nodes[y])
                 if edge1 is not None:
                     if cg_new.G.graph[x, y] == Endpoint.TAIL.value and cg_new.G.graph[y, x] == Endpoint.TAIL.value:
-                        cg_new.G.remove_edge(edge1)
+                        cg_new.G.remove_edge_reconstitute_dpath(edge1)
                         cg_new.G.add_edge(Edge(cg_new.G.nodes[x], cg_new.G.nodes[y], Endpoint.TAIL, Endpoint.ARROW))
                     elif cg_new.G.graph[x, y] == Endpoint.ARROW.value and cg_new.G.graph[y, x] == Endpoint.TAIL.value:
-                        cg_new.G.remove_edge(edge1)
+                        cg_new.G.remove_edge_reconstitute_dpath(edge1)
                         cg_new.G.add_edge(Edge(cg_new.G.nodes[x], cg_new.G.nodes[y], Endpoint.ARROW, Endpoint.ARROW))
                 else:
                     cg_new.G.add_edge(Edge(cg_new.G.nodes[x], cg_new.G.nodes[y], Endpoint.TAIL, Endpoint.ARROW))
@@ -219,10 +219,10 @@ def maxp(cg: CausalGraph, priority: int = 3, background_knowledge: BackgroundKno
                 edge2 = cg_new.G.get_edge(cg_new.G.nodes[z], cg_new.G.nodes[y])
                 if edge2 is not None:
                     if cg_new.G.graph[z, y] == Endpoint.TAIL.value and cg_new.G.graph[y, z] == Endpoint.TAIL.value:
-                        cg_new.G.remove_edge(edge2)
+                        cg_new.G.remove_edge_reconstitute_dpath(edge2)
                         cg_new.G.add_edge(Edge(cg_new.G.nodes[z], cg_new.G.nodes[y], Endpoint.TAIL, Endpoint.ARROW))
                     elif cg_new.G.graph[z, y] == Endpoint.ARROW.value and cg_new.G.graph[y, z] == Endpoint.TAIL.value:
-                        cg_new.G.remove_edge(edge2)
+                        cg_new.G.remove_edge_reconstitute_dpath(edge2)
                         cg_new.G.add_edge(Edge(cg_new.G.nodes[z], cg_new.G.nodes[y], Endpoint.ARROW, Endpoint.ARROW))
                 else:
                     cg_new.G.add_edge(Edge(cg_new.G.nodes[z], cg_new.G.nodes[y], Endpoint.TAIL, Endpoint.ARROW))
@@ -231,13 +231,13 @@ def maxp(cg: CausalGraph, priority: int = 3, background_knowledge: BackgroundKno
                 if (not cg_new.is_fully_directed(y, x)) and (not cg_new.is_fully_directed(y, z)):
                     edge1 = cg_new.G.get_edge(cg_new.G.nodes[x], cg_new.G.nodes[y])
                     if edge1 is not None:
-                        cg_new.G.remove_edge(edge1)
+                        cg_new.G.remove_edge_reconstitute_dpath(edge1)
                     # Orient only if the edges have not been oriented the other way around
                     cg_new.G.add_edge(Edge(cg_new.G.nodes[x], cg_new.G.nodes[y], Endpoint.TAIL, Endpoint.ARROW))
 
                     edge2 = cg_new.G.get_edge(cg_new.G.nodes[z], cg_new.G.nodes[y])
                     if edge2 is not None:
-                        cg_new.G.remove_edge(edge2)
+                        cg_new.G.remove_edge_reconstitute_dpath(edge2)
                     cg_new.G.add_edge(Edge(cg_new.G.nodes[z], cg_new.G.nodes[y], Endpoint.TAIL, Endpoint.ARROW))
 
             elif priority == 3:
@@ -266,13 +266,13 @@ def maxp(cg: CausalGraph, priority: int = 3, background_knowledge: BackgroundKno
             if (not cg_new.is_fully_directed(y, x)) and (not cg_new.is_fully_directed(y, z)):
                 edge1 = cg_new.G.get_edge(cg_new.G.nodes[x], cg_new.G.nodes[y])
                 if edge1 is not None:
-                    cg_new.G.remove_edge(edge1)
+                    cg_new.G.remove_edge_reconstitute_dpath(edge1)
                 # Orient only if the edges have not been oriented the other way around
                 cg_new.G.add_edge(Edge(cg_new.G.nodes[x], cg_new.G.nodes[y], Endpoint.TAIL, Endpoint.ARROW))
 
                 edge2 = cg_new.G.get_edge(cg_new.G.nodes[z], cg_new.G.nodes[y])
                 if edge2 is not None:
-                    cg_new.G.remove_edge(edge2)
+                    cg_new.G.remove_edge_reconstitute_dpath(edge2)
                 cg_new.G.add_edge(Edge(cg_new.G.nodes[z], cg_new.G.nodes[y], Endpoint.TAIL, Endpoint.ARROW))
 
         return cg_new
@@ -367,13 +367,13 @@ def definite_maxp(cg: CausalGraph, alpha: float, priority: int = 4,
         if (not cg_new.is_fully_directed(y, x)) and (not cg_new.is_fully_directed(y, z)):
             edge1 = cg_new.G.get_edge(cg_new.G.nodes[x], cg_new.G.nodes[y])
             if edge1 is not None:
-                cg_new.G.remove_edge(edge1)
+                cg_new.G.remove_edge_reconstitute_dpath(edge1)
             # Orient only if the edges have not been oriented the other way around
             cg_new.G.add_edge(Edge(cg_new.G.nodes[x], cg_new.G.nodes[y], Endpoint.TAIL, Endpoint.ARROW))
 
             edge2 = cg_new.G.get_edge(cg_new.G.nodes[z], cg_new.G.nodes[y])
             if edge2 is not None:
-                cg_new.G.remove_edge(edge2)
+                cg_new.G.remove_edge_reconstitute_dpath(edge2)
             cg_new.G.add_edge(Edge(cg_new.G.nodes[z], cg_new.G.nodes[y], Endpoint.TAIL, Endpoint.ARROW))
 
             cg_new.definite_UC.append((x, y, z))
