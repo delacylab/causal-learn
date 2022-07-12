@@ -71,7 +71,7 @@ def dag2pag(dag: Dag, islatent: List[Node]) -> GeneralGraph:
         if not is_connected:
             edge = PAG.get_edge(nodex, nodey)
             if edge:
-                PAG.remove_edge(edge)
+                PAG.remove_edge_reconstitute_dpath(edge)
             for path in noncolider_path:
                 for i in range(1, len(path) - 1):
                     if nodes[path[i]] in islatent:
@@ -91,11 +91,11 @@ def dag2pag(dag: Dag, islatent: List[Node]) -> GeneralGraph:
                 edge_xz = PAG.get_edge(nodex, nodez)
                 edge_yz = PAG.get_edge(nodey, nodez)
                 if edge_xz and edge_yz:
-                    PAG.remove_edge(edge_xz)
+                    PAG.remove_edge_reconstitute_dpath(edge_xz)
                     mod_endpoint(edge_xz, nodez, Endpoint.ARROW)
                     PAG.add_edge(edge_xz)
 
-                    PAG.remove_edge(edge_yz)
+                    PAG.remove_edge_reconstitute_dpath(edge_yz)
                     mod_endpoint(edge_yz, nodez, Endpoint.ARROW)
                     PAG.add_edge(edge_yz)
 
