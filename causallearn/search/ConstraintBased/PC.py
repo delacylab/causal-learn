@@ -362,10 +362,10 @@ def detect_parent(r: int, data_: ndarray, alpha: float, indep_test, stable: bool
                         if not stable:  # Unstable: Remove x---y right away
                             edge1 = cg.G.get_edge(cg.G.nodes[x], cg.G.nodes[y])
                             if edge1 is not None:
-                                cg.G.remove_edge(edge1)
+                                cg.G.remove_edge_reconstitute_dpath(edge1)
                             edge2 = cg.G.get_edge(cg.G.nodes[y], cg.G.nodes[x])
                             if edge2 is not None:
-                                cg.G.remove_edge(edge2)
+                                cg.G.remove_edge_reconstitute_dpath(edge2)
                         else:  # Stable: x---y will be removed only
                             edge_removal.append((x, y))  # after all conditioning sets at
                             edge_removal.append((y, x))  # depth l have been considered
@@ -376,7 +376,7 @@ def detect_parent(r: int, data_: ndarray, alpha: float, indep_test, stable: bool
         for (x, y) in list(set(edge_removal)):
             edge1 = cg.G.get_edge(cg.G.nodes[x], cg.G.nodes[y])
             if edge1 is not None:
-                cg.G.remove_edge(edge1)
+                cg.G.remove_edge_reconstitute_dpath(edge1)
 
     ## *********** Adaptation 3 ***********
     ## extract the parent of r from the graph
@@ -454,10 +454,10 @@ def skeleton_correction(data: ndarray, alpha: float, test_with_correction_name: 
                         if not stable:  # Unstable: Remove x---y right away
                             edge1 = cg.G.get_edge(cg.G.nodes[x], cg.G.nodes[y])
                             if edge1 is not None:
-                                cg.G.remove_edge(edge1)
+                                cg.G.remove_edge_reconstitute_dpath(edge1)
                             edge2 = cg.G.get_edge(cg.G.nodes[y], cg.G.nodes[x])
                             if edge2 is not None:
-                                cg.G.remove_edge(edge2)
+                                cg.G.remove_edge_reconstitute_dpath(edge2)
                         else:  # Stable: x---y will be removed only
                             edge_removal.append((x, y))  # after all conditioning sets at
                             edge_removal.append((y, x))  # depth l have been considered
@@ -468,7 +468,7 @@ def skeleton_correction(data: ndarray, alpha: float, test_with_correction_name: 
         for (x, y) in list(set(edge_removal)):
             edge1 = cg.G.get_edge(cg.G.nodes[x], cg.G.nodes[y])
             if edge1 is not None:
-                cg.G.remove_edge(edge1)
+                cg.G.remove_edge_reconstitute_dpath(edge1)
 
     return cg
 
