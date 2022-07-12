@@ -238,7 +238,7 @@ def insert(G, i, j, T):
 
     for k in range(len(T)):  # directing the previous undirected edge between T and Xj as T->Xj
         if G.get_edge(nodes[T[k]], nodes[j]) is not None:
-            G.remove_edge(G.get_edge(nodes[T[k]], nodes[j]))
+            G.remove_edge_reconstitute_dpath(G.get_edge(nodes[T[k]], nodes[j]))
         G.add_edge(Edge(nodes[T[k]], nodes[j], Endpoint.TAIL, Endpoint.ARROW))
 
     return G
@@ -327,12 +327,12 @@ def delete(G, i, j, H):
     nodes = G.get_nodes()
     if G.get_edge(nodes[i], nodes[j]) is not None:
         # delete the edge between Xi and Xj
-        G.remove_edge(G.get_edge(nodes[i], nodes[j]))
+        G.remove_edge_reconstitute_dpath(G.get_edge(nodes[i], nodes[j]))
     for k in range(len(H)):  # directing the previous undirected edge
         if G.get_edge(nodes[j], nodes[H[k]]) is not None:
-            G.remove_edge(G.get_edge(nodes[j], nodes[H[k]]))
+            G.remove_edge_reconstitute_dpath(G.get_edge(nodes[j], nodes[H[k]]))
         if G.get_edge(nodes[i], nodes[H[k]]) is not None:
-            G.remove_edge(G.get_edge(nodes[i], nodes[H[k]]))
+            G.remove_edge_reconstitute_dpath(G.get_edge(nodes[i], nodes[H[k]]))
         G.add_edge(Edge(nodes[j], nodes[H[k]], Endpoint.TAIL, Endpoint.ARROW))
         G.add_edge(Edge(nodes[i], nodes[H[k]], Endpoint.TAIL, Endpoint.ARROW))
     return G
