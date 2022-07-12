@@ -546,7 +546,7 @@ class Dag(GeneralGraph):
         return nodes
 
     # Removes the given edge from the graph.
-    def remove_edge(self, edge):
+    def remove_edge_reconstitute_dpath(self, edge):
 
         node1 = edge.get_node1()
         node2 = edge.get_node2()
@@ -558,6 +558,18 @@ class Dag(GeneralGraph):
         self.graph[i, j] = 0
 
         self.reconstitute_dpath(self.get_graph_edges())
+
+    # Removes the given edge from the graph.
+    def remove_edge(self, edge):
+
+        node1 = edge.get_node1()
+        node2 = edge.get_node2()
+
+        i = self.node_map[node1]
+        j = self.node_map[node2]
+
+        self.graph[j, i] = 0
+        self.graph[i, j] = 0
 
     # Removes the edge connecting the given two nodes, provided there is exactly one such edge.
     def remove_connecting_edge(self, node1, node2):
@@ -583,6 +595,7 @@ class Dag(GeneralGraph):
 
         for edge in edges:
             self.remove_edge(edge)
+        self.reconstitute_dpath(self.get_graph_edges())
 
     # Removes a node from the graph.
     def remove_node(self, node):
